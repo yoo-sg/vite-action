@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: cicd-cluster
+  name: cicd-cluster-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cicd-cluster
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: cicd-cluster
+    spec:
+      containers:
+        - image: gcr.io/PROJECT_ID/IMAGE:TAG
+          name: cicd-cluster
+          ports:
+            - containerPort: 8080
