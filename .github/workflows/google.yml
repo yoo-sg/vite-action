@@ -38,8 +38,8 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@main
+      uses: actions/checkout@v2
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@v1
       with:
         version: '285.0.0'
         project_id: ${{ secrets.GCP_PROJECT_ID }}
