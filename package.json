@@ -12,7 +12,11 @@
     "e2e-test": "playwright test"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@hookform/resolvers": "^3.3.4",
+    "@mui/icons-material": "^5.15.19",
+    "@mui/material": "^5.15.19",
     "@tanstack/react-query": "^5.32.0",
     "@toast-ui/editor": "^3.2.2",
     "@toast-ui/react-editor": "^3.2.3",
