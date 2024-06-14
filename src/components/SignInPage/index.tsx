@@ -1,76 +1,123 @@
-import { TLoginForm } from "@src/utils/schema";
 import { SubmitHandler, UseFormReturn } from "react-hook-form";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { TLoginForm } from "@src/utils/schema";
+
+function Copyright(props: any) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{" "}
+      {new Date().getFullYear()}
+      {"."}
+    </Typography>
+  );
+}
+
 type SignInPageProps = {
   onSubmit: SubmitHandler<TLoginForm>;
   signInForm: UseFormReturn<TLoginForm>;
 };
 
 function SignInPageView({ onSubmit, signInForm }: SignInPageProps) {
-  const { register, handleSubmit } = signInForm;
+  const { register, handleSubmit, formState } = signInForm;
+  const { errors } = formState;
   console.log("signInForm : ", signInForm.formState.errors);
 
   return (
-    <div className="w-screen h-screen flex items-center">
-      <div className="max-w-sm mx-auto my-10 p-6 border border-gray-300 rounded-md shadow-sm">
-        <form
-          noValidate
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-6"
+    <Container sx={{ width: "100vw" }}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
-          <h2 className="text-lg font-semibold text-gray-900">SignInPage</h2>
-          <div className="relative">
-            <label
-              htmlFor="username"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Email:
-            </label>
-            <input
-              {...register("email")}
-              type="text"
-              id="email"
-              name="email"
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit(onSubmit)}
+            sx={{ mt: 1 }}
+          >
+            <TextField
+              margin="normal"
               required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              fullWidth
+              id="email"
+              label="Email Address"
+              autoComplete="email"
+              autoFocus
+              {...register("email", { required: "Email is required" })}
+              error={!!errors.email}
+              helperText={errors.email ? errors.email.message : ""}
             />
-            {signInForm.formState.errors.email && (
-              <span className="absolute -bottom-6 text-red-600 text-sm font-medium">
-                {signInForm.formState.errors.email.message}
-              </span>
-            )}
-          </div>
-          <div className="relative">
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Password:
-            </label>
-            <input
-              {...register("password")}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="Password"
               type="password"
               id="password"
-              name="password"
-              required
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+              autoComplete="current-password"
+              {...register("password", { required: "Password is required" })}
+              error={!!errors.password}
+              helperText={errors.password ? errors.password.message : ""}
             />
-            {signInForm.formState.errors.password && (
-              <span className="absolute -bottom-6 text-red-600 text-sm font-medium">
-                {signInForm.formState.errors.password.message}
-              </span>
-            )}
-          </div>
-          <button
-            id="sign-in"
-            type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-          >
-            Log In
-          </button>
-        </form>
-      </div>
-    </div>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="/sign-up" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 8, mb: 4 }} />
+      </Container>
+    </Container>
   );
 }
-
 export default SignInPageView;

@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
-import MainPageView from "@src/components/Main";
+import AddPostView from "@src/components/AddPost";
 
-export default function MainPage() {
+export default function AddPostPage() {
   return (
     <Container>
-      <MainPageView />
+      <AddPostView />
     </Container>
   );
 }
