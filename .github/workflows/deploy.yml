@@ -56,8 +56,11 @@ jobs:
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v1"
         with:
-          project_id: $PROJECT_ID
-          service_account_email: $GKE_EMAIL
+          project_id: ${{ secrets.GKE_PROJECT }}
+          service_account_email: ${{ secrets.GKE_EMAIL }}
+
+      - name: Configure project
+        run: gcloud config set project $PROJECT_ID
 
       - name: Configure Docker
         run: gcloud auth configure-docker
