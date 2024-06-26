@@ -4,7 +4,7 @@ name: PR Test
 on:
 pull_request:
   types: [opened, reopened]
-  branches: [develop, feature, release]
+  branches: [main, develop, feature, release]
 
 jobs:
 Run Jest:
