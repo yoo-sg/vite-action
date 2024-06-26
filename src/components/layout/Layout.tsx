@@ -46,10 +46,6 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ showNav, children }) => {
   const [open, setOpen] = useState(false);
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
   const handleDrawerClose = () => {
     setOpen(false);
   };
