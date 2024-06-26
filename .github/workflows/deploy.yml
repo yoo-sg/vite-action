@@ -1,0 +1,83 @@
+# This workflow will build a docker container, publish it to Google Container Registry, and deploy it to GKE when there is a push to the "main" branch.
+#
+# To configure this workflow:
+#
+# 1. Ensure that your repository contains the necessary configuration for your Google Kubernetes Engine cluster, including deployment.yml, kustomization.yml, service.yml, etc.
+#
+# 2. Create and configure a Workload Identity Provider for GitHub (https://github.com/google-github-actions/auth#setting-up-workload-identity-federation)
+#
+# 3. Change the values for the GAR_LOCATION, GKE_ZONE, GKE_CLUSTER, IMAGE, REPOSITORY and DEPLOYMENT_NAME environment variables (below).
+
+# For more support on how to run the workflow, please visit https://github.com/google-github-actions/setup-gcloud/tree/master/example-workflows/gke-kustomize
+
+name: Build and Deploy to GKE
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+env:
+  PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GKE_EMAIL: ${{ secrets.GKE_EMAIL }}
+  GITHUB_SHA: ${{ github.sha }}
+  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER }} # TODO: update to cluster name
+  GKE_ZONE: ${{ secrets.GKE_ZONE }} # TODO: update to cluster zone
+  IMAGE: ${{ secrets.IMAGE }}
+  REGISTRY_HOSTNAME: ${{ secrets.REGISTRY_HOSTNAME }}
+  DEPLOYMENT_NAME: ${{ secrets.DEPLOYMENT_NAME }} # TODO: update to deployment name
+  GAR_LOCATION: ${{ secrets.GAR_LOCATION }} # TODO: update region of the Artifact Registry
+  REPOSITORY: ${{ secrets.REPOSITORY }} # TODO: update to Artifact Registry docker repository
+
+jobs:
+  build-and-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the project
+        run: npm run build
+      # Configure Workload Identity Federation and generate an access token.
+      - name: "Authenticate to Google Cloud"
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials: ${{ secrets.GCP_CREDENTIALS }}
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
+        with:
+          project_id: $PROJECT_ID
+          service_account_email: $GKE_EMAIL
+        run: gcloud config set project $PROJECT_ID
+
+      - name: Configure Docker
+        run: gcloud auth configure-docker
+
+      # Build the Docker image
+      - name: Build Docker Image
+        run: |-
+          docker build \
+            --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA" \
+            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+            --build-arg GITHUB_REF="$GITHUB_REF" \
+            .
+      # Push the Docker image to Google Artifact Registry
+      - name: Push Docker Image To Container Registry
+        run: |-
+          docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
+
+      # Deploy the Docker image to the GKE cluster
+      - name: Deploy to GKE
+        run: |
+          IMAGE_TAG="$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
+          kubectl set image deployment/$DEPLOYMENT_NAME $IMAGE=$IMAGE_TAG

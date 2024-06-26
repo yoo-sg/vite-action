@@ -3,25 +3,26 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: cicd-cluster
-  name: cicd-cluster-app-deployment
+    app: vite-action
+  name: vite-action-app-deployment
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
-      app: cicd-cluster
+      app: vite-action
   strategy:
     rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 25%
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        app: cicd-cluster
+        app: vite-action
     spec:
       containers:
-        - image: gcr.io/PROJECT_ID/IMAGE:TAG
-          name: cicd-cluster
+        - image: asia-northeast1-docker.pkg.dev/engaged-carving-424707-n9/vite-action-repo/vite-action:v1
+          name: vite-action
           ports:
-            - containerPort: 8080
+            - containerPort: 80
+      imagePullSecrets:
+        - name: vite-action
