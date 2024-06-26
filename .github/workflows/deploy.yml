@@ -58,7 +58,6 @@ jobs:
         with:
           project_id: $PROJECT_ID
           service_account_email: $GKE_EMAIL
-        run: gcloud config set project $PROJECT_ID
 
       - name: Configure Docker
         run: gcloud auth configure-docker
