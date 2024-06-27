@@ -92,6 +92,12 @@ jobs:
           USE_GKE_GCLOUD_AUTH_PLUGIN: True
         run: |
           gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $PROJECT_ID
+          
+      # Apply Kubernetes manifests (deployment, service)
+      - name: Apply Kubernetes manifests
+        run: |
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
 
       # Deploy the Docker image to the GKE cluster
       - name: Deploy to GKE
