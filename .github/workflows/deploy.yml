@@ -81,7 +81,13 @@ jobs:
       # Install gke-gcloud-auth-plugin
       - name: Install gke-gcloud-auth-plugin
         run: |
-          sudo apt-get update && sudo apt-get install -y google-cloud-sdk-gke-gcloud-auth-plugin
+          mkdir -p $HOME/.kube
+          curl -O https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+          chmod +x kubectl
+          sudo mv kubectl /usr/local/bin/
+          curl -O https://storage.googleapis.com/gke-gcloud-auth-plugin/v1.0.1/linux/amd64/gke-gcloud-auth-plugin
+          chmod +x gke-gcloud-auth-plugin
+          sudo mv gke-gcloud-auth-plugin /usr/local/bin/
           
       # Authenticate kubectl and get cluster credentials
       - name: Get GKE Credentials
