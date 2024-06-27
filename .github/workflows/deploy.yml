@@ -80,7 +80,6 @@ jobs:
 
       - name: Set up kubeconfig
         run: |
-          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
           gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $PROJECT_ID
 
       # Deploy the Docker image to the GKE cluster
