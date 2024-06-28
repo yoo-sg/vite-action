@@ -105,4 +105,4 @@ jobs:
           USE_GKE_GCLOUD_AUTH_PLUGIN: True
         run: |
           IMAGE_TAG="$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
-          kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE_TAG
+          kubectl set image deployment/$DEPLOYMENT_NAME $CONTAINER_NAME=$IMAGE_TAG --record
