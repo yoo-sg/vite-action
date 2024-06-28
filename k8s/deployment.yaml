@@ -3,13 +3,13 @@ kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: vite-action
+    app: ala
   name: vite-action-app-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: vite-action
+      app: ala
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -17,7 +17,7 @@ spec:
   template:
     metadata:
       labels:
-        app: vite-action
+        app: ala
     spec:
       containers:
         - image: asia-northeast1-docker.pkg.dev/engaged-carving-424707-n9/vite-action-repo/vite-action:v1
