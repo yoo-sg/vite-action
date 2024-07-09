@@ -6,6 +6,7 @@ import { TextField, Button } from "@mui/material";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@toast-ui/editor/dist/theme/toastui-editor-dark.css";
 import "./editor.css";
+import { HTML_INIT, MARKDOWN_INIT } from "@src/utils/constant";
 
 const AddPostView: React.FC = () => {
   const editorRef = useRef<Editor>(null);
@@ -14,10 +15,13 @@ const AddPostView: React.FC = () => {
 
   useEffect(() => {
     const savedTitle = localStorage.getItem("postTitle");
-    const savedContent = localStorage.getItem("postContent");
+    // const savedContent = localStorage.getItem("postContent");
     if (savedTitle) setTitle(savedTitle);
-    if (savedContent && editorRef.current) {
-      editorRef.current.getInstance().setMarkdown(savedContent);
+    // if (savedContent && editorRef.current) {
+    if (HTML_INIT && editorRef.current) {
+      console.log("CONTENT", MARKDOWN_INIT);
+
+      editorRef.current.getInstance().setMarkdown(MARKDOWN_INIT);
     }
   }, []);
 
@@ -28,13 +32,16 @@ const AddPostView: React.FC = () => {
 
   const handleEditorChange = () => {
     if (editorRef.current) {
-      const editorContent = editorRef.current.getInstance().getMarkdown();
+      const editorContent = editorRef.current.getInstance().getHTML();
       setContent(editorContent);
       localStorage.setItem("postContent", editorContent);
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
+    console.log("content", content);
+    // console.log("html", editorRef.current?.getInstance().getHtml());
+
     e.preventDefault();
     if (!title || !content) {
       alert("제목과 내용은 필수입니다.");

@@ -6,6 +6,7 @@ type AuthState = {
 };
 
 export const useAuthStore = create<AuthState>((set) => ({
-  token: null,
+  // token: null,
+  token: "token",
   setToken: (token) => set({ token }),
 }));

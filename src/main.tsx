@@ -11,6 +11,8 @@ import SignUpPage from "./pages/SignUpPage";
 import "./index.css";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import AddPostPage from "./pages/AddPostPage";
+import GetMarkdownPage from "./pages/GetMarkdownPage";
+import GetHtmlPage from "./pages/GetHtmlPage";
 
 if (process.env.NODE_ENV === "development") {
   const worker = setupWorker(...handlers);
@@ -34,6 +36,14 @@ const router = createBrowserRouter([
   {
     path: "/add-post",
     element: <ProtectedRoute element={<AddPostPage />} />,
+  },
+  {
+    path: "/get-markdown",
+    element: <ProtectedRoute element={<GetMarkdownPage />} />,
+  },
+  {
+    path: "/get-html",
+    element: <ProtectedRoute element={<GetHtmlPage />} />,
   },
 ]);
 const queryClient = new QueryClient();

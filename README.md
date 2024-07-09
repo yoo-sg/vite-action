@@ -104,7 +104,7 @@ react-ts/
 
 ### ESLint와 Prettier
 
-- 린팅을 위해 ESLint를 사용합니다. 설정은 `.eslintrc.js`에 있습니다.
+- 린팅을 위해 ESLint를 사용합니다. 설정은 `.eslintrc.cjs`에 있습니다.
 - 코드 포매팅을 위해 Prettier를 사용합니다. 설정은 `.prettierrc`에 있습니다.
 
 ### 커밋 메시지
