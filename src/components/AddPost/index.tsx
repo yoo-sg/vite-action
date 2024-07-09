@@ -6,7 +6,7 @@ import { TextField, Button } from "@mui/material";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@toast-ui/editor/dist/theme/toastui-editor-dark.css";
 import "./editor.css";
-import { HTML_INIT, MARKDOWN_INIT } from "@src/utils/constant";
+import { HTML_INIT } from "@src/utils/constant";
 
 const AddPostView: React.FC = () => {
   const editorRef = useRef<Editor>(null);
@@ -19,9 +19,9 @@ const AddPostView: React.FC = () => {
     if (savedTitle) setTitle(savedTitle);
     // if (savedContent && editorRef.current) {
     if (HTML_INIT && editorRef.current) {
-      console.log("CONTENT", MARKDOWN_INIT);
+      console.log("CONTENT", HTML_INIT);
 
-      editorRef.current.getInstance().setMarkdown(MARKDOWN_INIT);
+      editorRef.current.getInstance().setMarkdown(HTML_INIT);
     }
   }, []);
 
