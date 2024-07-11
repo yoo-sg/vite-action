@@ -58,7 +58,7 @@ const AddPostView: React.FC = () => {
   };
 
   return (
-    <div>
+    <div style={{ width: "90vw" }}>
       <h1>Toast UI Editor Example</h1>
       <form onSubmit={handleSubmit}>
         <TextField
@@ -78,6 +78,12 @@ const AddPostView: React.FC = () => {
           useCommandShortcut={true}
           ref={editorRef}
           onChange={handleEditorChange}
+          toolbarItems={[
+            ["heading", "bold", "italic", "strike"],
+            ["hr", "quote"],
+            ["ul", "ol", "task"],
+            ["link"],
+          ]}
         />
         <Button type="submit">Submit</Button>
       </form>
